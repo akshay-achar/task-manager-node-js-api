@@ -3,7 +3,7 @@ const router = express.Router()
 const Task = require('../models/task')
 const auth = require('../middleware/auth')
 
-router.get('/task', auth, async (req, res) => {
+router.get('/tasks', auth, async (req, res) => {
   try {
     const task = await Task.find({ owner: req.user._id })
     res.send({ task })
@@ -12,7 +12,7 @@ router.get('/task', auth, async (req, res) => {
   }
 })
 
-router.get('/task/:id', auth, async (req, res) => {
+router.get('/tasks/:id', auth, async (req, res) => {
   try {
     const task = await Task.find({ _id: req.params.id, owner: req.user._id })
     res.send({ task })
@@ -21,7 +21,7 @@ router.get('/task/:id', auth, async (req, res) => {
   }
 })
 
-router.post('/task', auth, async (req, res) => {
+router.post('/tasks', auth, async (req, res) => {
   try {
     const task = new Task({
       ...req.body,
@@ -34,7 +34,7 @@ router.post('/task', auth, async (req, res) => {
   }
 })
 
-router.patch('/task/:id', auth, async (req, res) => {
+router.patch('/tasks/:id', auth, async (req, res) => {
   const updates = Object.keys(req.body)
   const allowUpdates = ['name', 'description']
   const isValidOperation = updates.every((update) => {
@@ -56,7 +56,7 @@ router.patch('/task/:id', auth, async (req, res) => {
   }
 })
 
-router.delete('/task/:id', auth, async (req, res) => {
+router.delete('/tasks/:id', auth, async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
     res.send(task)
